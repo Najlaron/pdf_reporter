@@ -15,7 +15,7 @@ def truncate_strings(df, max_length):
     df.columns = [col[:max_length-3] + '...' if len(col) > max_length else col for col in df.columns]
     # Truncate all string cell values to max_length and add "..." if they are truncated
     for col in df.columns:
-        df = df.applymap(lambda x: (x[:max_length-3] + '...' if len(x) > max_length else x) if isinstance(x, str) else x)
+        df = df.map(lambda x: (x[:max_length-3] + '...' if len(x) > max_length else x) if isinstance(x, str) else x)
     return df
  
 def custom_round(x, precision=3): 
@@ -181,8 +181,8 @@ class Report:
             col_width = 60 if len(data_view.columns) <= 8 else 50
             col_widths = [col_width] * len(data_view.columns)
 
-        data_view = data_view.applymap(lambda x: custom_round(x) if isinstance(x, (int, float)) else x)
-        data_view = data_view.applymap(str)
+        data_view = data_view.map(lambda x: custom_round(x) if isinstance(x, (int, float)) else x)
+        data_view = data_view.map(str)
         data_view = truncate_strings(data_view, truncate_nm)
 
         # Convert DataFrame to a list of lists, with each inner list representing a row
