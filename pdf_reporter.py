@@ -9,6 +9,7 @@ from reportlab.lib.units import inch, mm
 
 from PyPDF2 import PdfMerger
 import pandas as pd
+import os
 
 def truncate_strings(df, max_length):
     # Truncate all column names to max_length and add "..." if they are truncated
@@ -135,6 +136,8 @@ class Report:
         if isinstance(image, str):
             if not image.endswith('.png'):
                 image = image + '.png'
+            if not os.path.exists(image):
+                print(f"Warning: File not found - {image}")
             image = Image(image)
 
         # Calculate the scale factors for the width and height
